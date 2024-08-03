@@ -1,15 +1,17 @@
-// Test ID: IIDSAT
-
 import OrderItem from "./OrderItem";
 
 import { useLoaderData } from "react-router-dom";
 import { getOrder } from "../../services/apiRestaurant";
-import { calcMinutesLeft } from "./../../utlis/helpers";
+import {
+  calcMinutesLeft,
+  formatCurrency,
+  formatDate,
+} from "./../../utlis/helpers";
 
 function Order() {
   const order = useLoaderData();
 
-  // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
+  // Everyone can search for all orders, so for privacy reasons we're gonna exclude names or address, these are only for the restaurant staff
   const {
     id,
     status,
@@ -42,7 +44,7 @@ function Order() {
       <div className="flex flex-wrap items-center justify-between gap-2 bg-stone-200 px-6 py-5">
         <p className="font-medium">
           {deliveryIn >= 0
-            ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
+            ? `Only ${deliveryIn} minutes left 😃`
             : "Order should have arrived"}
         </p>
         <p className="text-xs text-stone-500">
@@ -50,7 +52,7 @@ function Order() {
         </p>
       </div>
 
-      <ul className="dive-stone-200 divide-y border-b border-t">
+      <ul className="divide-stone-200 divide-y border-b border-t">
         {cart.map((item) => (
           <OrderItem item={item} key={item.id} />
         ))}

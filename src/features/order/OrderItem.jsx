@@ -1,8 +1,7 @@
 import { formatCurrency } from "../../utlis/helpers";
 
-
-function OrderItem({ item, isLoadingIngredients, ingredients }) {
-  const { quantity, name, totalPrice } = item;
+function OrderItem({ item }) {
+  const { quantity, name, totalPrice, imageUrl } = item;
 
   return (
     <li className="py-3">
@@ -11,6 +10,7 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
           <span className="font-bold">{quantity}&times;</span> {name}
         </p>
         <p className="font-bold">{formatCurrency(totalPrice)}</p>
+        <img src={imageUrl} alt={name} className="h-24" />
       </div>
     </li>
   );
