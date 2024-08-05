@@ -86,18 +86,17 @@ function CreateOrder() {
               </p>
             )}
           </div>
-          {
-            (!position.latitude && !position.longitude && (
-              <span className="absolute right-[3px] z-50 ">
-                <Button
-                  type="small"
-                  onClick={handleFetchAddress}
-                  disabled={isLoadingAddress || isSubmitting}
-                >
-                  get position
-                </Button>
-              </span>
-            ))}
+          {!position?.latitude && !position?.longitude && (
+            <span className="absolute right-[3px] z-50 ">
+              <Button
+                type="small"
+                onClick={handleFetchAddress}
+                disabled={isLoadingAddress || isSubmitting}
+              >
+                get position
+              </Button>
+            </span>
+          )}
         </div>
 
         <div className="mb-12 flex items-center gap-5">

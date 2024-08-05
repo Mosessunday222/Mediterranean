@@ -1,15 +1,25 @@
+import { useFetcher, useLoaderData } from "react-router-dom";
 import OrderItem from "./OrderItem";
 
-import { useLoaderData } from "react-router-dom";
 import { getOrder } from "../../services/apiRestaurant";
 import {
   calcMinutesLeft,
   formatCurrency,
   formatDate,
 } from "./../../utlis/helpers";
+import { useEffect } from "react";
 
 function Order() {
   const order = useLoaderData();
+  const fetcher = useFetcher();
+
+  useEffect(
+    function () {
+      if (!fetcher.data && fetcher.state === "idle") fetcher.load("/menu");
+    },
+    [fetcher]
+  );
+  console.log(fetcher.data);
 
   // Everyone can search for all orders, so for privacy reasons we're gonna exclude names or address, these are only for the restaurant staff
   const {
@@ -54,7 +64,15 @@ function Order() {
 
       <ul className="divide-stone-200 divide-y border-b border-t">
         {cart.map((item) => (
-          <OrderItem item={item} key={item.id} />
+          <OrderItem
+            item={item}
+            isLoadingIngredients={fetcher.state === "loading"}
+            key={item.id}
+            ingredients={
+              fetcher?.data?.find((el) => el.id === item.pizzaId)
+                ?.ingredients ?? []
+            }
+          />
         ))}
       </ul>
 
