@@ -1,6 +1,6 @@
 import { formatCurrency } from "../../utlis/helpers";
 
-function OrderItem({ item, isLoadingIngredients, ingredients }) {
+function OrderItem({ item, isLoadingIngredients, ingredients, imageUrl }) {
   const { quantity, name, totalPrice } = item;
   console.log(isLoadingIngredients);
 
@@ -11,7 +11,7 @@ function OrderItem({ item, isLoadingIngredients, ingredients }) {
           <span className="font-bold">{quantity}&times;</span> {name}
         </p>
         <p className="font-bold">{formatCurrency(totalPrice)}</p>
-        {/* <img src={imageUrl} alt={name} className="h-24" /> */}
+        <img src={imageUrl} alt={name} className="h-24" />
       </div>
       <p className="">
         {isLoadingIngredients ? "loading....." : ingredients.join(", ")}
