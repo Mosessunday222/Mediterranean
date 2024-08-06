@@ -30,19 +30,22 @@ function CreateOrder() {
 
   const cart = useSelector(getCart);
   const isLoadingAddress = addAderssStatus === "isLoading";
-  console.log(cart);
   const dispatch = useDispatch();
+
   function handleFetchAddress(e) {
     e.preventDefault();
     dispatch(fetchAddress());
   }
+
   const totalCartPrice = useSelector(getTotalPrice);
   const priorityPrice = withPriority ? 0.2 * totalCartPrice : 0;
   const totalPrice = totalCartPrice + priorityPrice;
+
   if (!cart.length) return <EmptyCart />;
+
   return (
     <div className="px-4 py-6">
-      <h2 className="mb-8 text-xl font-semibold">Read to order? Let's go!</h2>
+      <h2 className="mb-8 text-xl font-semibold">Ready to order? Let's go!</h2>
 
       <Form method="POST">
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -87,7 +90,7 @@ function CreateOrder() {
             )}
           </div>
           {!position?.latitude && !position?.longitude && (
-            <span className="absolute right-[3px] z-50 ">
+            <span className="absolute right-[3px] bottom-[3px] z-50  md:bottom-[5px]  md:top-[5px]">
               <Button
                 type="small"
                 onClick={handleFetchAddress}
@@ -105,7 +108,7 @@ function CreateOrder() {
             type="checkbox"
             name="priority"
             id="priority"
-            value={withPriority}
+            checked={withPriority}
             onChange={(e) => setWithPriority(e.target.checked)}
           />
           <label htmlFor="priority" className="font-medium">
@@ -115,6 +118,15 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
+          <input
+            type="hidden"
+            name="position"
+            value={
+              position?.longitude && position?.latitude
+                ? `${position.latitude}, ${position.longitude}`
+                : ""
+            }
+          />
           <Button disabled={isSubmitting} type="primary">
             {isSubmitting
               ? "Placing order...."
@@ -135,6 +147,7 @@ export async function action({ request }) {
     cart: JSON.parse(data.cart),
     priority: data.priority === "true",
   };
+  // console.log(order);
 
   const errors = {};
   if (!isValidPhone(order.phone))
